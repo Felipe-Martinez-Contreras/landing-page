@@ -178,7 +178,7 @@ Tres opciones realmente distintas: un mapa, una serie temporal y un registro bio
 
 **Descartada: la proyección PCA del clustering.** Son datos de pacientes con cáncer de mama. Ponerlos en el hero los convierte en adorno, justo lo que prohíbe §6. Se quedan en su tarjeta o caso de estudio.
 
-### Opción A. «Chile en puntos»: la red de salud dibuja el país (recomendada)
+### Opción A. «Chile en puntos»: la red de salud dibuja el país (elegida)
 
 ```text
   Felipe                                 ·:·   Arica
@@ -283,8 +283,9 @@ Tres opciones realmente distintas: un mapa, una serie temporal y un registro bio
 - Etiquetas pequeñas sobre cada título de sección («Proyectos seleccionados», etc.). Las prohíbe §6 y no aportaban nada que el `h2` no diga.
 - Un indicador de disponibilidad con punto verde «en línea». Era un tropo de SaaS. La disponibilidad va como una frase dentro del hero.
 
-## 8. Pendiente de tu decisión
+## 8. Decisiones del propietario
 
-1. **Elemento distintivo:** A, B o C (recomiendo A).
-2. **Paleta y tipografía:** aprobar o pedir cambios.
-3. **Solo si eliges B:** ¿tienes lecturas guardadas de tu sistema de calidad del aire? Si no, uso Open-Meteo (modelado, CC BY 4.0).
+Aprobado el 27-09-2026:
+
+1. **Elemento distintivo: opción A, «Chile en puntos».** Las opciones B y C quedan como registro y no se implementan.
+2. **Paleta y tipografía aprobadas** tal como están en §2 y §3.

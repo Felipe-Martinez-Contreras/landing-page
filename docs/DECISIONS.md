@@ -20,3 +20,4 @@ Registro breve de decisiones tomadas ante ambigüedades (1–3 líneas cada una)
 - **Clustering descartado como elemento distintivo:** son datos clínicos (§6).
 - **SINCA no se usa** para la opción B: su sitio declara «Todos los derechos reservados» y no publica una licencia abierta.
 - **`scripts/contrast.mjs`** queda en el repo para recalcular la tabla de contraste si cambia la paleta.
+- **Elemento distintivo elegido: opción A («Chile en puntos»)**, con el dataset de establecimientos del MINSAL (CC0). Paleta y tipografía aprobadas sin cambios.
