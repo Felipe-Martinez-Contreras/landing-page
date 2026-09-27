@@ -377,7 +377,7 @@ Pendiente para ti (contenido real):
 Al cerrar cada fase, márcala y agrega la fecha y el hash del commit. No edites el resto de este archivo sin mi permiso.
 
 - [x] Fase 0: Entorno (2026-09-27, 970a438)
-- [ ] Fase 1: Dirección visual
+- [x] Fase 1: Dirección visual (2026-09-27, 3222656)
 - [ ] Fase 2: Fundaciones
 - [ ] Fase 3: Contenido y secciones
 - [ ] Fase 4: Interacción y elemento distintivo
