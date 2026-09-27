@@ -1,0 +1,9 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+.screenshots/
+public/
+# Documentos editados a mano: no se reformatean
+CLAUDE.md
+docs/CONTENT.md

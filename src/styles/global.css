@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Design tokens (colors, fonts, type scale) arrive in Phase 2, from DESIGN.md. */

@@ -6,7 +6,7 @@ node_modules/
 .env
 .env.local
 
-# Compilación y caché
+# CompilaciÃ³n y cachÃ©
 dist/
 build/
 .next/
@@ -18,3 +18,15 @@ build/
 Thumbs.db
 .vscode/
 .idea/
+
+# Registros
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Entorno (Astro)
+.env.production
+
+# QA visual
+.screenshots/
