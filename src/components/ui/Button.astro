@@ -11,6 +11,8 @@ interface Props extends AriaAttributes, DataAttributes {
   size?: "md" | "lg";
   /** Adds the `download` attribute (links only). */
   download?: boolean;
+  /** Renders hidden; a script reveals it (e.g. when an API it needs exists). */
+  hidden?: boolean;
   id?: string;
   class?: string;
 }
@@ -20,6 +22,7 @@ const {
   variant = "primary",
   size = "md",
   download = false,
+  hidden = false,
   class: className,
   ...rest
 } = Astro.props;
@@ -51,6 +54,7 @@ const classes = [
   <a
     href={href}
     download={download || undefined}
+    hidden={hidden || undefined}
     rel={external ? "noopener noreferrer" : undefined}
     class:list={classes}
     {...rest}
@@ -58,7 +62,12 @@ const classes = [
     <slot />
   </a>
 ) : (
-  <button type="button" class:list={classes} {...rest}>
+  <button
+    type="button"
+    hidden={hidden || undefined}
+    class:list={classes}
+    {...rest}
+  >
     <slot />
   </button>
 )}

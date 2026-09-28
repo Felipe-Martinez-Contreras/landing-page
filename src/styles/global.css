@@ -87,6 +87,17 @@
   --radius-*: initial;
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
+
+  /* The one orchestrated moment (DESIGN.md §6): the hero map appears north to south. */
+  --animate-reveal-south: reveal-south 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  @keyframes reveal-south {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
 }
 
 @layer base {

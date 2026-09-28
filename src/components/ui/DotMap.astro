@@ -1,0 +1,78 @@
+---
+interface Props {
+  viewBox: string;
+  /** CSS aspect-ratio of the plot ("width / height"), so it reserves its space (no CLS). */
+  aspectRatio: string;
+  /** SVG path data: one zero-length segment per dot. */
+  layers: { base: string; highlight?: string };
+  /** Positions in % of the plot. Hidden below `lg`, where the plot is a narrow strip. */
+  labels?: { name: string; x: number; y: number }[];
+  caption: string;
+  source: string;
+  class?: string;
+  /** Positions the plot from the parent (e.g. beside the text on mobile). */
+  plotClass?: string;
+}
+
+const {
+  viewBox,
+  aspectRatio,
+  layers,
+  labels = [],
+  caption,
+  source,
+  class: className,
+  plotClass,
+} = Astro.props;
+---
+
+<!--
+  The caption describes the figure for everyone, so the drawing is aria-hidden.
+  Dots keep a fixed size in px at any scale (non-scaling-stroke). The entrance
+  (north to south) is CSS only and runs only without reduced motion; the final
+  state is the static one.
+-->
+<figure class={className}>
+  <div class={plotClass}>
+    <div class="relative forced-color-adjust-none" style={{ aspectRatio }}>
+      <svg
+        viewBox={viewBox}
+        aria-hidden="true"
+        focusable="false"
+        class="block size-full overflow-visible motion-safe:animate-reveal-south"
+      >
+        <path
+          d={layers.base}
+          class="stroke-ink-muted"
+          fill="none"
+          stroke-width="2"
+          stroke-linecap="round"
+          vector-effect="non-scaling-stroke"
+        ></path>
+        {layers.highlight && (
+          <path
+            d={layers.highlight}
+            class="stroke-highlight"
+            fill="none"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            vector-effect="non-scaling-stroke"
+          />
+        )}
+      </svg>
+      {labels.map((label) => (
+        <span
+          aria-hidden="true"
+          class="absolute hidden -translate-y-1/2 items-center gap-1.5 font-heading text-axis whitespace-nowrap text-ink-muted tabular-nums lg:flex"
+          style={{ top: `${label.y}%`, left: `${label.x}%` }}
+        >
+          <span class="w-8 border-t border-ink-muted" />
+          {label.name}
+        </span>
+      ))}
+    </div>
+  </div>
+  <figcaption class="mt-4 max-w-measure text-sm text-ink-muted">
+    {caption} <span class="block mt-1">{source}</span>
+  </figcaption>
+</figure>

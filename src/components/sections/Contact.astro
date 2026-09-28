@@ -1,4 +1,5 @@
 ---
+import Copy from "@lucide/astro/icons/copy";
 import Download from "@lucide/astro/icons/download";
 import BrandIcon from "../ui/BrandIcon.astro";
 import Button from "../ui/Button.astro";
@@ -13,23 +14,41 @@ interface Props {
   emailLabel: string;
   social: { id: string; label: string; href: string }[];
   cv: { label: string; href: string };
+  copy: { label: string; done: string; failed: string };
 }
 
-const { title, intro, email, emailLabel, social, cv } = Astro.props;
+const { title, intro, email, emailLabel, social, cv, copy } = Astro.props;
 ---
 
 <Section id="contacto" title={title}>
   <p class="max-w-measure text-lead">{intro}</p>
 
-  <p class="mt-8">
-    <span class="sr-only">{emailLabel}: </span>
-    <a
-      href={`mailto:${email}`}
-      class="inline-flex min-h-11 items-center font-heading text-h3 break-all text-accent underline decoration-1 underline-offset-4 hover:decoration-2"
-    >
-      {email}
-    </a>
-  </p>
+  <!-- The mailto: link works alone; the copy button appears only if the Clipboard API exists. -->
+  <div class="mt-8" data-copy-email>
+    <p>
+      <span class="sr-only">{emailLabel}: </span>
+      <a
+        href={`mailto:${email}`}
+        class="inline-flex min-h-11 items-center font-heading text-h3 break-all text-accent underline decoration-1 underline-offset-4 hover:decoration-2"
+      >
+        {email}
+      </a>
+    </p>
+    <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+      <Button
+        variant="secondary"
+        hidden
+        data-copy-button
+        data-value={email}
+        data-done={copy.done}
+        data-failed={copy.failed}
+      >
+        <Copy aria-hidden="true" />
+        {copy.label}
+      </Button>
+      <p role="status" class="text-sm text-ink-muted" data-copy-status></p>
+    </div>
+  </div>
 
   <ul class="mt-6 flex flex-wrap items-center gap-x-2 gap-y-3">
     {social.map((link) => {
@@ -50,3 +69,27 @@ const { title, intro, email, emailLabel, social, cv } = Astro.props;
     </li>
   </ul>
 </Section>
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-copy-email]")
+    .forEach((root) => {
+      const button =
+        root.querySelector<HTMLButtonElement>("[data-copy-button]");
+      const status = root.querySelector<HTMLElement>("[data-copy-status]");
+      if (!button || !status || !navigator.clipboard) return;
+
+      const { value = "", done = "", failed = "" } = button.dataset;
+      button.hidden = false;
+      button.addEventListener("click", async () => {
+        // Clear first so repeating the same message is announced again.
+        status.textContent = "";
+        try {
+          await navigator.clipboard.writeText(value);
+          status.textContent = done;
+        } catch {
+          status.textContent = failed;
+        }
+      });
+    });
+</script>

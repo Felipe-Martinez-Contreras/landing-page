@@ -49,6 +49,11 @@ export const ui = {
   contact: {
     title: "Contacto",
     emailLabel: "Correo",
+    copy: {
+      label: "Copiar correo",
+      done: "Correo copiado.",
+      failed: "No se pudo copiar. Selecciona el correo y cópialo a mano.",
+    },
     cv: "Descargar CV (PDF)",
   },
   footer: {

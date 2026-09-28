@@ -5,7 +5,9 @@ import Container from "../ui/Container.astro";
 import Heading from "../ui/Heading.astro";
 import IconLink from "../ui/IconLink.astro";
 import BrandIcon from "../ui/BrandIcon.astro";
+import DotMap from "../ui/DotMap.astro";
 import { getBrandIcon } from "../../lib/brands";
+import type { ComponentProps } from "astro/types";
 
 interface Props {
   name: string;
@@ -16,6 +18,8 @@ interface Props {
   cv: { label: string; href: string };
   social: { id: string; label: string; href: string }[];
   socialLabel: string;
+  /** The distinctive element (DESIGN.md §5). */
+  figure?: Omit<ComponentProps<typeof DotMap>, "class" | "plotClass">;
 }
 
 const {
@@ -27,16 +31,17 @@ const {
   cv,
   social,
   socialLabel,
+  figure,
 } = Astro.props;
 
 // The name sets on two lines, as the title of the figure (DESIGN.md §3).
 const nameLines = name.split(" ");
-const hasFigure = Astro.slots.has("figure");
 ---
 
 <section aria-labelledby="inicio-titulo" class="pt-10 pb-section sm:pt-16">
-  <Container class="grid gap-y-10 lg:grid-cols-12 lg:gap-x-8">
-    <div class="lg:col-span-7">
+  <Container class="relative grid gap-y-10 lg:grid-cols-12 lg:gap-x-8">
+    <!-- Below lg the map is a narrow strip beside the text; its caption follows the actions. -->
+    <div class:list={["lg:col-span-7", figure && "pr-18 sm:pr-24 lg:pr-0"]}>
       <Heading level={1} size="display" id="inicio-titulo">
         {nameLines.map((line) => (
           <span class="block">{line}</span>
@@ -76,10 +81,12 @@ const hasFigure = Astro.slots.has("figure");
       </div>
     </div>
 
-    {hasFigure && (
-      <div class="lg:col-span-4 lg:col-start-9">
-        <slot name="figure" />
-      </div>
+    {figure && (
+      <DotMap
+        {...figure}
+        class="lg:col-span-4 lg:col-start-9"
+        plotClass="absolute top-0 right-4 w-14 sm:right-6 sm:w-16 lg:static lg:w-24"
+      />
     )}
   </Container>
 </section>

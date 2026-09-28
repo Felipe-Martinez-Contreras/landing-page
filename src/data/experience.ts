@@ -26,7 +26,7 @@ export const experience: Experience[] = [
     kind: "education",
     title: "Ingeniería Civil en Computación",
     organization: "Universidad de Talca",
-    // TODO: año de ingreso a la universidad.
+    start: "2019",
     end: "present",
     dateNote: "egreso estimado en 2027",
     description:

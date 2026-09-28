@@ -9,6 +9,7 @@ import Contact from "../components/sections/Contact.astro";
 import { site } from "../data/site";
 import { ui } from "../data/ui";
 import { experience } from "../data/experience";
+import { healthMap } from "../data/health-map";
 import { toExperienceView } from "../lib/experience";
 import { sortProjects, toProjectView } from "../lib/projects";
 import { groupSkills } from "../lib/skills";
@@ -42,6 +43,7 @@ const cv = { label: ui.hero.cv, href: withBase(site.cvPath) };
     cv={cv}
     social={site.social}
     socialLabel={ui.hero.socialLabel}
+    figure={healthMap}
   />
   <About
     title={ui.about.title}
@@ -66,6 +68,7 @@ const cv = { label: ui.hero.cv, href: withBase(site.cvPath) };
     intro={site.contact.intro}
     email={site.email}
     emailLabel={ui.contact.emailLabel}
+    copy={ui.contact.copy}
     social={site.social}
     cv={{ label: ui.contact.cv, href: withBase(site.cvPath) }}
   />

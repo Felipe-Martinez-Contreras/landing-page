@@ -58,7 +58,10 @@ const { title, projects, labels } = Astro.props;
           )}
 
           {project.primary && (
-            <p class="mt-4 font-bold text-accent" aria-hidden="true">
+            <p
+              class="mt-4 font-bold text-accent underline-offset-4 group-hover:underline"
+              aria-hidden="true"
+            >
               {project.primary.label}
             </p>
           )}
