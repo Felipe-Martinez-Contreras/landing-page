@@ -29,6 +29,11 @@
       "y": 94.7
     }
   ],
+  "grid": {
+    "cellKm": 7,
+    "dots": 1520,
+    "emergencyDots": 442
+  },
   "counts": {
     "inOperationWithCoordinates": 5288,
     "continental": 5284,

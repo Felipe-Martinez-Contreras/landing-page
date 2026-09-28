@@ -17,7 +17,7 @@ const date = new Intl.DateTimeFormat("es-CL", {
   timeZone: "UTC",
 }).format(new Date(data.source.cutDate));
 
-const { counts } = data;
+const { counts, grid } = data;
 const excluded = counts.inOperationWithCoordinates - counts.continental;
 const degrees = (latitude: number) => `${number.format(Math.abs(latitude))}°`;
 
@@ -27,9 +27,10 @@ export const healthMap: HealthMap = {
   layers: { base: data.layers.base, highlight: data.layers.emergency },
   labels: data.labels,
   caption:
-    `Chile continental dibujado por sus ${number.format(counts.continental)} establecimientos de salud vigentes con coordenadas, uno por punto. ` +
-    `Los ${number.format(counts.emergency)} que tienen servicio de urgencia van en guinda y con un punto más grande. ` +
-    `El ${number.format(Math.round(counts.band.share))} % está entre los ${degrees(counts.band.north)} y los ${degrees(counts.band.south)} de latitud sur, ` +
+    `Chile continental dibujado con sus ${number.format(counts.continental)} establecimientos de salud vigentes con coordenadas, agrupados en una cuadrícula de unos ${grid.cellKm} km: ` +
+    `cada uno de los ${number.format(grid.dots)} puntos es una celda con al menos un establecimiento, así que el mapa muestra dónde hay establecimientos, no cuántos. ` +
+    `Los ${number.format(grid.emergencyDots)} puntos en guinda, más grandes, son celdas con al menos uno de los ${number.format(counts.emergency)} establecimientos con servicio de urgencia. ` +
+    `Del total, el ${number.format(Math.round(counts.band.share))} % está entre los ${degrees(counts.band.north)} y los ${degrees(counts.band.south)} de latitud sur, ` +
     `y la Región Metropolitana reúne ${number.format(counts.metropolitan)}.`,
   source:
     `Fuente: ${data.source.name}, en ${data.source.publisher} (${data.source.license}), corte del ${date}. ` +

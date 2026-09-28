@@ -58,10 +58,14 @@ Registro breve de decisiones tomadas ante ambigüedades (1–3 líneas cada una)
 - **Año de ingreso: 2019** (dato del propietario); la trayectoria muestra 2019–hoy. **Idiomas:** se mantiene solo inglés, por indicación del propietario.
 - **Mapa como SVG inline, no como imagen de `sharp`.** Un `path` por capa con un segmento de largo cero por punto (extremos redondeados, `non-scaling-stroke`), deduplicado en una rejilla de 600 unidades de alto: 12,5 KB sin comprimir y 2,6 KB con gzip, frente a 15–35 KB por imagen y tema. Toma los colores de los tokens (sin una imagen por tema), se ve nítido en cualquier densidad y no compite por el LCP.
 - **Snapshot en `scripts/data/health-facilities.csv`** (lat, lon, urgencia y región de los 5.288 vigentes con coordenadas, corte 22-09-2026, CC0). Lo procesa `scripts/build-health-map.mjs`, que genera `src/data/health-map.json`; el pie se compone en `src/data/health-map.ts` a partir de esos conteos, sin cifras escritas a mano.
-- **Solo Chile continental (5.284 puntos):** quedan fuera Rapa Nui, Juan Fernández y un registro con latitud inválida, y el pie lo dice. Las 755 urgencias van en guinda y con un punto más grande, para que el color no sea la única señal.
+- **Solo Chile continental (5.284 establecimientos, 1.520 puntos):** quedan fuera Rapa Nui, Juan Fernández y un registro con latitud inválida, y el pie lo dice. Las celdas con al menos una de las 755 urgencias (442 puntos) van en guinda y con un punto más grande, para que el color no sea la única señal.
 - **Afirmación del pie calculada:** el 57 % queda entre 32° y 38,5° S y la RM reúne 1.069. Reemplaza el «se concentran en el valle central» del boceto, que era una impresión.
 - **Móvil:** el mapa es una franja de 56–64 px a la derecha del texto y el pie va después de las acciones; los rótulos (Arica, Santiago, Punta Arenas) solo aparecen desde `lg`.
 - **`DotMap` en `ui/`**, genérico (capas, rótulos y pie por props); `Hero` lo recibe como prop `figure` en lugar de una ranura, para controlar su posición.
 - **Copiar correo:** el botón nace con `hidden` y el script lo muestra solo si existe la Clipboard API; la confirmación va en un `role="status"`. JS total de cliente: 0,9 KB con gzip.
 - **Sin filtro de proyectos:** hay 3 y el filtro se exige desde 6 (§6).
 - **Adorno quitado:** una leyenda de color aparte del pie; el pie ya nombra la guinda y el tamaño del punto.
+
+## Antes de la Fase 5
+
+- **Pie del mapa corregido:** decía «uno por punto», pero la rejilla (~7 km por celda) agrupa hasta 222 establecimientos en un punto: son 1.520 puntos para 5.284 establecimientos. El pie ahora lo dice y aclara que el mapa muestra dónde hay establecimientos, no cuántos; el script exporta `grid` (tamaño de celda y puntos por capa) para que esas cifras no se escriban a mano. Se mantiene la agrupación: dibujar un punto por establecimiento superpondría puntos idénticos sin cambiar lo que se ve.

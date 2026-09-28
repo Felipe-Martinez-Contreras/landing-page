@@ -24,8 +24,10 @@ const SOURCE = {
 
 // Continental Chile. Leaves out Rapa Nui, Juan Fernández and invalid coordinates.
 const BOUNDS = { north: -17, south: -56.5, west: -76, east: -66 };
-// Height of the plot in viewBox units; coordinates are rounded to this grid.
+// Height of the plot in viewBox units; coordinates are rounded to this grid, so one dot
+// stands for one grid cell with at least one facility, not for one facility.
 const HEIGHT = 600;
+const KM_PER_DEGREE_OF_LATITUDE = 111.2;
 const PAD = 4;
 const METROPOLITAN_REGION = "13";
 // Latitude band where most facilities sit (central valley to Biobío), for the caption.
@@ -137,6 +139,11 @@ const output = {
       y: percent(y + PAD, box.height),
     };
   }),
+  grid: {
+    cellKm: Math.round(KM_PER_DEGREE_OF_LATITUDE / scale),
+    dots: base.cells,
+    emergencyDots: emergency.cells,
+  },
   counts: {
     inOperationWithCoordinates: all.length,
     continental: points.length,
