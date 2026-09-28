@@ -24,3 +24,35 @@ export function getYear(date: Date): number {
     }).format(date),
   );
 }
+
+export interface PeriodPart {
+  label: string;
+  /** Machine-readable value for <time datetime>; absent for "present". */
+  datetime?: string;
+}
+
+const MONTHS_SHORT = [
+  "ene.",
+  "feb.",
+  "mar.",
+  "abr.",
+  "may.",
+  "jun.",
+  "jul.",
+  "ago.",
+  "sept.",
+  "oct.",
+  "nov.",
+  "dic.",
+];
+
+/** Turns `YYYY`, `YYYY-MM` or `present` into a label and a datetime value. */
+export function toPeriodPart(value: string, presentLabel: string): PeriodPart {
+  if (value === "present") return { label: presentLabel };
+  const [year, month] = value.split("-");
+  const monthLabel = month ? MONTHS_SHORT[Number(month) - 1] : undefined;
+  return {
+    label: monthLabel ? `${monthLabel} ${year}` : year,
+    datetime: value,
+  };
+}

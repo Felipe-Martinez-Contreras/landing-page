@@ -1,18 +1,72 @@
 ---
-// Placeholder until Phase 3 composes the sections.
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Container from "../components/ui/Container.astro";
-import Heading from "../components/ui/Heading.astro";
+import Hero from "../components/sections/Hero.astro";
+import About from "../components/sections/About.astro";
+import Projects from "../components/sections/Projects.astro";
+import Skills from "../components/sections/Skills.astro";
+import Contact from "../components/sections/Contact.astro";
 import { site } from "../data/site";
+import { ui } from "../data/ui";
+import { experience } from "../data/experience";
+import { toExperienceView } from "../lib/experience";
+import { sortProjects, toProjectView } from "../lib/projects";
+import { groupSkills } from "../lib/skills";
+import { withBase } from "../lib/url";
+
+const projects = sortProjects(await getCollection("projects"));
+const projectViews = projects.map((entry) =>
+  toProjectView(entry, {
+    statusLabels: ui.projects.status,
+    linkLabels: ui.projects.links,
+    resolve: withBase,
+  }),
+);
+const skillGroups = groupSkills(projects, withBase);
+const timeline = experience.map((entry) =>
+  toExperienceView(entry, {
+    present: ui.about.present,
+    ongoing: ui.about.ongoing,
+  }),
+);
+const cv = { label: ui.hero.cv, href: withBase(site.cvPath) };
 ---
 
 <BaseLayout>
-  <Container class="py-section">
-    <Heading level={1} size="display">
-      {site.name}
-    </Heading>
-    <p class="mt-6 font-heading text-lead font-medium text-ink-muted">
-      {site.headline}
-    </p>
-  </Container>
+  <Hero
+    name={site.name}
+    role={site.hero.role}
+    valueProposition={site.hero.valueProposition}
+    availability={site.hero.availability}
+    primary={{ label: ui.hero.primary, href: withBase("/#proyectos") }}
+    cv={cv}
+    social={site.social}
+    socialLabel={ui.hero.socialLabel}
+  />
+  <About
+    title={ui.about.title}
+    bio={site.about.bio}
+    timelineLabel={ui.about.timelineTitle}
+    timeline={timeline}
+    languagesTitle={ui.about.languagesTitle}
+    languages={site.about.languages}
+  />
+  <Projects
+    title={ui.projects.title}
+    projects={projectViews}
+    labels={ui.projects}
+  />
+  <Skills
+    title={ui.skills.title}
+    groups={skillGroups}
+    usedIn={ui.skills.usedIn}
+  />
+  <Contact
+    title={ui.contact.title}
+    intro={site.contact.intro}
+    email={site.email}
+    emailLabel={ui.contact.emailLabel}
+    social={site.social}
+    cv={{ label: ui.contact.cv, href: withBase(site.cvPath) }}
+  />
 </BaseLayout>

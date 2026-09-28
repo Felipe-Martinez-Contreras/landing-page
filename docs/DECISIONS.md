@@ -34,3 +34,21 @@ Registro breve de decisiones tomadas ante ambigüedades (1–3 líneas cada una)
 - **Fechas en `America/Santiago`**, para que la «última actualización» coincida con el día local y no con UTC.
 - **Resaltado de código (Shiki, temas duales) se configura en la Fase 5**, junto con los casos de estudio que lo usan.
 - **Adorno quitado:** el fondo en hover del botón secundario; el borde que se oscurece ya basta como señal.
+
+## Fase 3: Contenido y secciones
+
+- **Textos elegidos por el propietario:** hero A (herramientas y base), bio A (planillero primero, ángulo validado), título «Clustering exploratorio sobre el dataset Wisconsin Breast Cancer» y sin línea personal.
+- **Campos extra en `projects`:** `shortTitle` (nombre corto para los enlaces de evidencia en Habilidades) y `coverAlt` (texto alternativo de `cover`). Ambos opcionales.
+- **Encuadre del clustering:** el `problem` dice «casos» y omite «que puedan apoyar el diagnóstico médico», para no sugerir utilidad clínica (encuadre obligatorio de `CONTENT.md`).
+- **Sin cuerpo Markdown todavía:** los casos de estudio se escriben en la Fase 5 tras la entrevista. Hoy ninguna tarjeta tiene acción principal (faltan enlaces), así que el título se muestra sin enlace.
+- **Métricas fuera de las tarjetas:** el `result` ya contiene las cifras; las métricas con su comparación se muestran en el caso de estudio (§6).
+- **Trayectoria de la más reciente a la más antigua.** Sin año de ingreso, la universidad muestra «En curso» en lugar de un rango.
+- **Idiomas:** solo inglés, porque `CONTENT.md` no declara el español.
+- **Habilidades:** dentro de cada grupo, primero las tecnologías con evidencia en proyectos y luego el resto, en el orden del registro.
+- **Hero con ranura `figure`** vacía hasta la Fase 4 (elemento distintivo); sin ella, el texto ocupa la columna de lectura sin dejar hueco.
+- **«Copiar correo» se agrega en la Fase 4** con su script; hoy el `mailto:` funciona solo.
+- **Adorno quitado:** el ícono de sobre junto al correo.
+
+## Notas para la Fase 6
+
+- **CLS del `h1` con Archivo** (pedido del propietario): medir el CLS del titular mientras carga Archivo (sin precarga). Si hay salto, precargar su archivo o reducirla a latin (la configuración ya pide `subsets: ["latin"]`; verificar qué archivo sirve realmente Fontsource).

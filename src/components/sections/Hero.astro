@@ -1,0 +1,85 @@
+---
+import Download from "@lucide/astro/icons/download";
+import Button from "../ui/Button.astro";
+import Container from "../ui/Container.astro";
+import Heading from "../ui/Heading.astro";
+import IconLink from "../ui/IconLink.astro";
+import BrandIcon from "../ui/BrandIcon.astro";
+import { getBrandIcon } from "../../lib/brands";
+
+interface Props {
+  name: string;
+  role: string;
+  valueProposition: string;
+  availability: string;
+  primary: { label: string; href: string };
+  cv: { label: string; href: string };
+  social: { id: string; label: string; href: string }[];
+  socialLabel: string;
+}
+
+const {
+  name,
+  role,
+  valueProposition,
+  availability,
+  primary,
+  cv,
+  social,
+  socialLabel,
+} = Astro.props;
+
+// The name sets on two lines, as the title of the figure (DESIGN.md §3).
+const nameLines = name.split(" ");
+const hasFigure = Astro.slots.has("figure");
+---
+
+<section aria-labelledby="inicio-titulo" class="pt-10 pb-section sm:pt-16">
+  <Container class="grid gap-y-10 lg:grid-cols-12 lg:gap-x-8">
+    <div class="lg:col-span-7">
+      <Heading level={1} size="display" id="inicio-titulo">
+        {nameLines.map((line) => (
+          <span class="block">{line}</span>
+        ))}
+        <span class="mt-5 block max-w-measure text-lead font-medium tracking-normal text-ink-muted font-stretch-normal">
+          {role}
+        </span>
+      </Heading>
+
+      <p class="mt-6 max-w-measure text-lead">{valueProposition}</p>
+      <p class="mt-4 max-w-measure font-bold">{availability}</p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3">
+        <Button href={primary.href} size="lg">
+          {primary.label}
+        </Button>
+        <Button href={cv.href} variant="secondary" size="lg" download>
+          <Download aria-hidden="true" />
+          {cv.label}
+        </Button>
+        <ul aria-label={socialLabel} class="flex items-center gap-1">
+          {social.map((link) => {
+            const icon = getBrandIcon(link.id);
+            return (
+              <li>
+                {icon ? (
+                  <IconLink href={link.href} label={link.label}>
+                    <BrandIcon icon={icon} />
+                  </IconLink>
+                ) : (
+                  <IconLink href={link.href} label={link.label} showLabel />
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
+
+    {hasFigure && (
+      <div class="lg:col-span-4 lg:col-start-9">
+        <slot name="figure" />
+      </div>
+    )}
+  </Container>
+</section>

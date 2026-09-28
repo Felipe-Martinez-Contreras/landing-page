@@ -1,0 +1,52 @@
+---
+import Download from "@lucide/astro/icons/download";
+import BrandIcon from "../ui/BrandIcon.astro";
+import Button from "../ui/Button.astro";
+import IconLink from "../ui/IconLink.astro";
+import Section from "../ui/Section.astro";
+import { getBrandIcon } from "../../lib/brands";
+
+interface Props {
+  title: string;
+  intro: string;
+  email: string;
+  emailLabel: string;
+  social: { id: string; label: string; href: string }[];
+  cv: { label: string; href: string };
+}
+
+const { title, intro, email, emailLabel, social, cv } = Astro.props;
+---
+
+<Section id="contacto" title={title}>
+  <p class="max-w-measure text-lead">{intro}</p>
+
+  <p class="mt-8">
+    <span class="sr-only">{emailLabel}: </span>
+    <a
+      href={`mailto:${email}`}
+      class="inline-flex min-h-11 items-center font-heading text-h3 break-all text-accent underline decoration-1 underline-offset-4 hover:decoration-2"
+    >
+      {email}
+    </a>
+  </p>
+
+  <ul class="mt-6 flex flex-wrap items-center gap-x-2 gap-y-3">
+    {social.map((link) => {
+      const icon = getBrandIcon(link.id);
+      return (
+        <li>
+          <IconLink href={link.href} label={link.label} showLabel>
+            {icon && <BrandIcon icon={icon} />}
+          </IconLink>
+        </li>
+      );
+    })}
+    <li>
+      <Button href={cv.href} variant="secondary" download>
+        <Download aria-hidden="true" />
+        {cv.label}
+      </Button>
+    </li>
+  </ul>
+</Section>
