@@ -1,0 +1,107 @@
+---
+import type { GetStaticPaths } from "astro";
+import Download from "@lucide/astro/icons/download";
+import { getCollection, render } from "astro:content";
+import { getImage } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectHeader from "../../components/sections/ProjectHeader.astro";
+import Button from "../../components/ui/Button.astro";
+import Container from "../../components/ui/Container.astro";
+import Prose from "../../components/ui/Prose.astro";
+import { site } from "../../data/site";
+import { tech } from "../../data/tech";
+import { ui } from "../../data/ui";
+import {
+  caseStudies,
+  caseStudyPath,
+  externalLinks,
+  nextCaseStudy,
+  type ProjectEntry,
+} from "../../lib/projects";
+import { withBase } from "../../lib/url";
+
+// Only projects with a Markdown body get a page (CLAUDE.md §4).
+export const getStaticPaths = (async () => {
+  const studies = caseStudies(await getCollection("projects"));
+  return studies.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry, next: nextCaseStudy(studies, entry.id) },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  entry: ProjectEntry;
+  next?: ProjectEntry;
+}
+
+const { entry, next } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+// Open Graph image: the cover cropped to 1200×630, else the site default.
+const ogImage = data.cover
+  ? (
+      await getImage({
+        src: data.cover,
+        width: 1200,
+        height: 630,
+        fit: "cover",
+        format: "png",
+      })
+    ).src
+  : site.seo.image;
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.summary}
+  image={ogImage}
+  type="article"
+>
+  <article class="pt-10 pb-section sm:pt-16">
+    <Container class="grid grid-cols-1 gap-y-10 lg:grid-cols-12 lg:gap-x-8">
+      <ProjectHeader
+        back={{ label: ui.caseStudy.back, href: withBase("/#proyectos") }}
+        title={data.title}
+        summary={data.summary}
+        facts={{
+          year: data.year,
+          status: ui.projects.status[data.status],
+          context: data.context,
+          role: data.role,
+          tech: data.tech.map((id) => tech[id].label),
+          methods: data.methods,
+          links: externalLinks(entry, ui.projects.links),
+        }}
+        labels={ui.caseStudy}
+      />
+
+      <div class="lg:col-span-7">
+        <Prose>
+          <Content />
+        </Prose>
+
+        <nav
+          aria-label={ui.caseStudy.closingLabel}
+          class="mt-12 max-w-measure space-y-4 border-t border-line pt-8"
+        >
+          {next && (
+            <p>
+              {ui.caseStudy.next}{" "}
+              <a
+                href={withBase(caseStudyPath(next.id))}
+                class="font-bold text-accent underline decoration-1 underline-offset-4 hover:decoration-2"
+              >
+                {next.data.title}
+              </a>
+            </p>
+          )}
+          <Button href={withBase(site.cvPath)} variant="secondary" download>
+            <Download aria-hidden="true" />
+            {ui.caseStudy.cv}
+          </Button>
+        </nav>
+      </div>
+    </Container>
+  </article>
+</BaseLayout>

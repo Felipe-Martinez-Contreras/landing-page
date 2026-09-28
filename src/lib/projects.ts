@@ -45,6 +45,21 @@ export function sortProjects(entries: ProjectEntry[]): ProjectEntry[] {
     );
 }
 
+/** Published projects with a case study, in the same order as on the home page. */
+export function caseStudies(entries: ProjectEntry[]): ProjectEntry[] {
+  return sortProjects(entries).filter(hasCaseStudy);
+}
+
+/** The case study after `id`, wrapping around; none when it is the only one. */
+export function nextCaseStudy(
+  studies: ProjectEntry[],
+  id: string,
+): ProjectEntry | undefined {
+  const index = studies.findIndex((entry) => entry.id === id);
+  if (index === -1 || studies.length < 2) return undefined;
+  return studies[(index + 1) % studies.length];
+}
+
 export function projectAnchor(id: string): string {
   return `proyecto-${id}`;
 }
@@ -63,6 +78,17 @@ interface ViewOptions {
 
 const LINK_ORDER: ProjectLinkKind[] = ["repo", "demo", "notebook", "paper"];
 
+/** External links of a project (repo, demo, notebook, paper), in a fixed order. */
+export function externalLinks(
+  entry: ProjectEntry,
+  labels: Record<ProjectLinkKind, string>,
+): LinkView[] {
+  return LINK_ORDER.flatMap((kind) => {
+    const href = entry.data.links[kind];
+    return href ? [{ label: labels[kind], href }] : [];
+  });
+}
+
 export function toProjectView(
   entry: ProjectEntry,
   { statusLabels, linkLabels, resolve }: ViewOptions,
@@ -75,10 +101,7 @@ export function toProjectView(
       href: resolve(caseStudyPath(entry.id)),
     });
   }
-  for (const kind of LINK_ORDER) {
-    const href = data.links[kind];
-    if (href) links.push({ label: linkLabels[kind], href });
-  }
+  links.push(...externalLinks(entry, linkLabels));
   const [primary, ...secondary] = links;
 
   return {

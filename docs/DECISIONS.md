@@ -69,3 +69,11 @@ Registro breve de decisiones tomadas ante ambigüedades (1–3 líneas cada una)
 ## Antes de la Fase 5
 
 - **Pie del mapa corregido:** decía «uno por punto», pero la rejilla (~7 km por celda) agrupa hasta 222 establecimientos en un punto: son 1.520 puntos para 5.284 establecimientos. El pie ahora lo dice y aclara que el mapa muestra dónde hay establecimientos, no cuántos; el script exporta `grid` (tamaño de celda y puntos por capa) para que esas cifras no se escriban a mano. Se mantiene la agrupación: dibujar un punto por establecimiento superpondría puntos idénticos sin cambiar lo que se ve.
+
+## Fase 5: Casos de estudio
+
+- **Resaltado de código:** Shiki (el que usa Astro 7 con Sätteri) con `github-light-default` y `github-dark-default`. Medí sus colores contra `--surface`: todos los de sintaxis pasan 4,5:1 en ambos temas (los de `github-light`/`github-dark` no). El fondo del bloque se fuerza a `--surface` y el tema oscuro se activa con `.dark`.
+- **Ficha en el margen de anotaciones:** en escritorio ocupa las 4 columnas de la derecha junto al cuerpo; en móvil va entre el resumen y el cuerpo, en el orden de §6. Muestra año, estado, contexto, rol, tecnologías, métodos y enlaces externos. Las `metrics` no van en la ficha: una cifra suelta en un margen incumple «toda métrica con su comparación»; van en el cuerpo, con su contexto.
+- **«Siguiente caso de estudio» circular** (el último enlaza al primero), en el orden de la home; si hay un solo caso, no aparece.
+- **Esqueleto `TODO:` de la plantilla** en los dos casos seguros, para probar la ruta; el clustering queda sin cuerpo hasta su entrevista (caso condicional).
+- **Adorno quitado:** las viñetas de «Métodos» en la ficha.

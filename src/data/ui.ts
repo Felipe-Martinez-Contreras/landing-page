@@ -41,6 +41,20 @@ export const ui = {
       paper: "Leer informe",
     },
   },
+  caseStudy: {
+    back: "Volver a proyectos",
+    factsLabel: "Ficha del proyecto",
+    year: "Año",
+    status: "Estado",
+    context: "Contexto",
+    role: "Rol",
+    tech: "Tecnologías",
+    methods: "Métodos",
+    links: "Enlaces",
+    closingLabel: "Seguir leyendo",
+    next: "Siguiente caso de estudio:",
+    cv: "Descargar CV (PDF)",
+  },
   skills: {
     title: "Habilidades",
     usedIn: (count: number) =>

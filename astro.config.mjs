@@ -32,6 +32,13 @@ export default defineConfig({
       fallbacks: ["sans-serif"],
     },
   ],
+  markdown: {
+    // Code blocks in case studies. Both themes keep syntax colors at ≥ 4.5:1 on --surface;
+    // global.css swaps to the dark one under .dark and paints the background with the token.
+    shikiConfig: {
+      themes: { light: "github-light-default", dark: "github-dark-default" },
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
   },

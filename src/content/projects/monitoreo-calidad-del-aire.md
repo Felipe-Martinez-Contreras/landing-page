@@ -23,3 +23,31 @@ links: {}
 featured: true
 order: 1
 ---
+
+## Problema y contexto
+
+TODO: redactar con las respuestas de la entrevista.
+
+## Datos
+
+TODO: fuente, tamaño, limpieza y sesgos.
+
+## Enfoque
+
+TODO: baseline, qué probé y por qué.
+
+## Evaluación
+
+TODO: métrica y esquema de validación.
+
+## Resultados
+
+TODO: cada cifra con su punto de comparación.
+
+## Limitaciones y próximos pasos
+
+TODO: qué mejoraría o haría distinto hoy.
+
+## Mi rol
+
+TODO: qué parte hice yo y cuál mi compañero o compañera.
