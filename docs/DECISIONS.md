@@ -21,3 +21,16 @@ Registro breve de decisiones tomadas ante ambigüedades (1–3 líneas cada una)
 - **SINCA no se usa** para la opción B: su sitio declara «Todos los derechos reservados» y no publica una licencia abierta.
 - **`scripts/contrast.mjs`** queda en el repo para recalcular la tabla de contraste si cambia la paleta.
 - **Elemento distintivo elegido: opción A («Chile en puntos»)**, con el dataset de establecimientos del MINSAL (CC0). Paleta y tipografía aprobadas sin cambios.
+
+## Fase 2: Fundaciones
+
+- **Archivo con eje `wdth`.** Fontsource entrega el archivo `standard` (wght + wdth, 90 KB, sin precarga); se declara `stretch: "62% 125%"` para que `font-stretch` funcione. El condensado de DESIGN.md §3 queda activo; su costo se mide con Lighthouse en la Fase 6.
+- **Variante `js:`** (clase `.js` que pone el script del `<head>`). El botón de menú y el toggle de tema solo se muestran con JS; sin JS, la navegación aparece como segunda fila del header y el tema sigue siendo el claro. Nada de contenido depende de JS.
+- **Enlaces externos en la misma pestaña**, con `rel="noopener noreferrer"`. Así no hace falta aviso para lectores de pantalla (§7).
+- **Menú móvil:** Esc lo cierra y devuelve el foco al botón; al elegir un enlace se cierra y el foco sigue al ancla (devolverlo al botón haría perder la sección elegida).
+- **`CardLink`** como primitivo adicional de `ui/` para el patrón de enlace extendido; el anillo de foco va en el `::after`, así rodea la tarjeta completa.
+- **Mapa de logos en `lib/brands.ts`.** LinkedIn no existe en `simple-icons`, así que se muestra como texto.
+- **`site.ts` y `ui.ts` mínimos** (identidad, enlaces, navegación y SEO por defecto); la Fase 3 agrega el resto. `sourceUrl` queda como `TODO:`.
+- **Fechas en `America/Santiago`**, para que la «última actualización» coincida con el día local y no con UTC.
+- **Resaltado de código (Shiki, temas duales) se configura en la Fase 5**, junto con los casos de estudio que lo usan.
+- **Adorno quitado:** el fondo en hover del botón secundario; el borde que se oscurece ya basta como señal.

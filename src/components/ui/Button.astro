@@ -1,0 +1,64 @@
+---
+import { isExternal } from "../../lib/url";
+
+type AriaAttributes = { [key: `aria-${string}`]: string | boolean | undefined };
+type DataAttributes = { [key: `data-${string}`]: string | undefined };
+
+interface Props extends AriaAttributes, DataAttributes {
+  /** Renders an <a> when present, a <button type="button"> otherwise. */
+  href?: string;
+  variant?: "primary" | "secondary" | "quiet";
+  size?: "md" | "lg";
+  /** Adds the `download` attribute (links only). */
+  download?: boolean;
+  id?: string;
+  class?: string;
+}
+
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  download = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const external = href !== undefined && isExternal(href);
+
+const variants = {
+  primary: "bg-accent text-accent-ink hover:bg-ink hover:text-canvas",
+  secondary: "border border-ink-muted text-ink hover:border-ink",
+  quiet:
+    "text-accent underline decoration-1 underline-offset-4 hover:decoration-2",
+} as const;
+
+const sizes = {
+  md: "min-h-11 px-4",
+  lg: "min-h-12 px-5",
+} as const;
+
+const classes = [
+  "inline-flex items-center justify-center gap-2 rounded-md font-bold whitespace-nowrap [&_svg]:size-5 [&_svg]:shrink-0",
+  variants[variant],
+  sizes[size],
+  variant === "quiet" && "px-1",
+  className,
+];
+---
+
+{href !== undefined ? (
+  <a
+    href={href}
+    download={download || undefined}
+    rel={external ? "noopener noreferrer" : undefined}
+    class:list={classes}
+    {...rest}
+  >
+    <slot />
+  </a>
+) : (
+  <button type="button" class:list={classes} {...rest}>
+    <slot />
+  </button>
+)}

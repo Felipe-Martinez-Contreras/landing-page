@@ -1,0 +1,20 @@
+---
+interface Props {
+  as?: "article" | "li" | "div";
+  /** `row`: a ruled row, like a table line. `surface`: an elevated block with border. */
+  variant?: "row" | "surface";
+  class?: string;
+}
+
+const { as: Tag = "article", variant = "row", class: className } = Astro.props;
+
+const variants = {
+  row: "border-t border-line py-6",
+  surface: "rounded-md border border-line bg-surface p-5 sm:p-6",
+} as const;
+---
+
+<!-- `relative` + `group` let a CardLink stretch over the whole card. -->
+<Tag class:list={["group relative", variants[variant], className]}>
+  <slot />
+</Tag>

@@ -1,0 +1,38 @@
+---
+import Container from "../ui/Container.astro";
+import { formatLongDate, getYear, toIsoDate } from "../../lib/date";
+
+interface Props {
+  name: string;
+  /** Build date: shown as the last update. */
+  updated: Date;
+  updatedLabel: string;
+  sourceUrl?: string;
+  sourceLabel: string;
+}
+
+const { name, updated, updatedLabel, sourceUrl, sourceLabel } = Astro.props;
+---
+
+<footer class="border-t border-line py-10 text-sm text-ink-muted">
+  <Container class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-8">
+    <p>
+      © {getYear(updated)} {name}
+    </p>
+    <p>
+      {updatedLabel}{" "}
+      <time datetime={toIsoDate(updated)}>{formatLongDate(updated)}</time>
+    </p>
+    {sourceUrl && (
+      <p>
+        <a
+          href={sourceUrl}
+          rel="noopener noreferrer"
+          class="text-accent underline decoration-1 underline-offset-4 hover:decoration-2"
+        >
+          {sourceLabel}
+        </a>
+      </p>
+    )}
+  </Container>
+</footer>

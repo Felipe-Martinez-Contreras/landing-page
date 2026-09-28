@@ -1,0 +1,99 @@
+---
+import Menu from "@lucide/astro/icons/menu";
+import X from "@lucide/astro/icons/x";
+
+interface Props {
+  items: { label: string; href: string }[];
+  navLabel: string;
+  buttonLabel: string;
+}
+
+const { items, navLabel, buttonLabel } = Astro.props;
+const panelId = "menu-movil";
+---
+
+<!--
+  Only rendered with JS (below md). Without JS, Header shows the regular nav
+  as a second row, so no content depends on this script.
+-->
+<div class="md:hidden" data-mobile-nav>
+  <button
+    type="button"
+    aria-expanded="false"
+    aria-controls={panelId}
+    data-menu-button
+    class="group hidden min-h-11 items-center justify-center gap-2 rounded-md px-2 font-bold text-ink hover:text-accent js:inline-flex"
+  >
+    <Menu class="size-5 group-aria-expanded:hidden" aria-hidden="true" />
+    <X class="hidden size-5 group-aria-expanded:block" aria-hidden="true" />
+    <span>{buttonLabel}</span>
+  </button>
+
+  <div
+    id={panelId}
+    data-menu-panel
+    class="absolute inset-x-0 top-full hidden border-b border-line bg-surface data-open:block motion-safe:transition-[opacity,translate,display] motion-safe:transition-discrete motion-safe:duration-150 motion-safe:starting:-translate-y-1 motion-safe:starting:opacity-0"
+  >
+    <nav aria-label={navLabel} class="px-4 py-2 sm:px-6">
+      <ul>
+        {items.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="flex min-h-12 items-center border-b border-line text-ink last:border-b-0 hover:text-accent"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<script>
+  const desktop = window.matchMedia("(min-width: 48rem)");
+
+  document
+    .querySelectorAll<HTMLElement>("[data-mobile-nav]")
+    .forEach((root) => {
+      const button =
+        root.querySelector<HTMLButtonElement>("[data-menu-button]");
+      const panel = root.querySelector<HTMLElement>("[data-menu-panel]");
+      if (!button || !panel) return;
+
+      const isOpen = () => button.getAttribute("aria-expanded") === "true";
+
+      const setOpen = (open: boolean, returnFocus = false) => {
+        button.setAttribute("aria-expanded", String(open));
+        panel.toggleAttribute("data-open", open);
+        if (!open && returnFocus) button.focus();
+      };
+
+      button.addEventListener("click", () => setOpen(!isOpen()));
+
+      // Choosing a link closes the menu; focus follows the anchor target.
+      panel.addEventListener("click", (event) => {
+        if (event.target instanceof Element && event.target.closest("a"))
+          setOpen(false);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && isOpen()) setOpen(false, true);
+      });
+
+      document.addEventListener("click", (event) => {
+        if (
+          isOpen() &&
+          event.target instanceof Node &&
+          !root.contains(event.target)
+        ) {
+          setOpen(false);
+        }
+      });
+
+      desktop.addEventListener("change", (event) => {
+        if (event.matches) setOpen(false);
+      });
+    });
+</script>

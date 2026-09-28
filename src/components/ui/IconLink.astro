@@ -1,0 +1,29 @@
+---
+import { isExternal } from "../../lib/url";
+
+interface Props {
+  href: string;
+  /** Accessible name. Visually hidden unless `showLabel` is true. */
+  label: string;
+  showLabel?: boolean;
+  class?: string;
+}
+
+const { href, label, showLabel = false, class: className } = Astro.props;
+const external = isExternal(href);
+---
+
+<!-- The icon goes in the default slot and must be aria-hidden. Hit area: 44×44 minimum. -->
+<a
+  href={href}
+  rel={external ? "noopener noreferrer" : undefined}
+  class:list={[
+    "inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-md text-ink hover:text-accent",
+    showLabel &&
+      "px-2 underline decoration-1 underline-offset-4 hover:decoration-2",
+    className,
+  ]}
+>
+  <slot />
+  <span class:list={[!showLabel && "sr-only"]}>{label}</span>
+</a>

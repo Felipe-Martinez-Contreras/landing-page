@@ -1,16 +1,18 @@
 ---
+// Placeholder until Phase 3 composes the sections.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/ui/Container.astro";
+import Heading from "../components/ui/Heading.astro";
+import { site } from "../data/site";
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  </body>
-</html>
+<BaseLayout>
+  <Container class="py-section">
+    <Heading level={1} size="display">
+      {site.name}
+    </Heading>
+    <p class="mt-6 font-heading text-lead font-medium text-ink-muted">
+      {site.headline}
+    </p>
+  </Container>
+</BaseLayout>

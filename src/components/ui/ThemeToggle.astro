@@ -1,0 +1,74 @@
+---
+import Moon from "@lucide/astro/icons/moon";
+import Sun from "@lucide/astro/icons/sun";
+
+interface Props {
+  /** Accessible name; `aria-pressed` says whether it is on (e.g. "Tema oscuro"). */
+  label: string;
+  class?: string;
+}
+
+const { label, class: className } = Astro.props;
+---
+
+<!-- Without JS the theme cannot change, so the control is only shown when JS runs. -->
+<button
+  type="button"
+  aria-pressed="false"
+  data-theme-toggle
+  class:list={[
+    "hidden min-h-11 min-w-11 items-center justify-center rounded-md text-ink hover:text-accent js:inline-flex",
+    className,
+  ]}
+>
+  <Moon class="size-5 dark:hidden" aria-hidden="true" />
+  <Sun class="hidden size-5 dark:block" aria-hidden="true" />
+  <span class="sr-only">{label}</span>
+</button>
+
+<script>
+  const STORAGE_KEY = "theme";
+  const root = document.documentElement;
+  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function storedTheme(): string | null {
+    try {
+      return localStorage.getItem(STORAGE_KEY);
+    } catch {
+      return null;
+    }
+  }
+
+  function applyTheme(dark: boolean): void {
+    root.classList.toggle("dark", dark);
+    const key = dark ? "dark" : "light";
+    document
+      .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+      .forEach((meta) => {
+        const color = meta.dataset[key];
+        if (color) meta.content = color;
+      });
+    document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(dark));
+    });
+  }
+
+  applyTheme(root.classList.contains("dark"));
+
+  document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const dark = !root.classList.contains("dark");
+      applyTheme(dark);
+      try {
+        localStorage.setItem(STORAGE_KEY, dark ? "dark" : "light");
+      } catch {
+        // Storage unavailable: the choice lasts for this page only.
+      }
+    });
+  });
+
+  // Without a saved choice, follow the system.
+  systemDark.addEventListener("change", (event) => {
+    if (storedTheme() === null) applyTheme(event.matches);
+  });
+</script>

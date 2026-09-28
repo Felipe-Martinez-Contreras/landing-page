@@ -1,0 +1,255 @@
+---
+// Design system reference (noindex, out of the sitemap). Removed in Phase 6.
+import Download from "@lucide/astro/icons/download";
+import Mail from "@lucide/astro/icons/mail";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BrandIcon from "../components/ui/BrandIcon.astro";
+import Button from "../components/ui/Button.astro";
+import Card from "../components/ui/Card.astro";
+import CardLink from "../components/ui/CardLink.astro";
+import Container from "../components/ui/Container.astro";
+import Heading from "../components/ui/Heading.astro";
+import IconLink from "../components/ui/IconLink.astro";
+import Prose from "../components/ui/Prose.astro";
+import Section from "../components/ui/Section.astro";
+import Tag from "../components/ui/Tag.astro";
+import ThemeToggle from "../components/ui/ThemeToggle.astro";
+import { getBrandIcon } from "../lib/brands";
+
+const themes = ["light", "dark"] as const;
+const themeNames = { light: "Tema claro", dark: "Tema oscuro" };
+
+const colors = [
+  { token: "canvas", swatch: "bg-canvas" },
+  { token: "surface", swatch: "bg-surface" },
+  { token: "ink", swatch: "bg-ink" },
+  { token: "ink-muted", swatch: "bg-ink-muted" },
+  { token: "line", swatch: "bg-line" },
+  { token: "accent", swatch: "bg-accent" },
+  { token: "accent-ink", swatch: "bg-accent-ink" },
+  { token: "highlight", swatch: "bg-highlight" },
+];
+
+const typeScale = [
+  {
+    token: "text-sm",
+    class: "text-sm",
+    sample: "Pie de figura y metadatos, 15 px",
+  },
+  { token: "text-base", class: "text-base", sample: "Cuerpo de texto, 17 px" },
+  {
+    token: "text-lead",
+    class: "text-lead",
+    sample: "Propuesta de valor, 19 a 22 px",
+  },
+  {
+    token: "text-axis",
+    class: "font-heading text-axis tabular-nums",
+    sample: "Rótulo de eje 0 25 50 75 100",
+  },
+];
+
+const github = getBrandIcon("github");
+---
+
+<BaseLayout title="Guía de estilo" noindex>
+  <Container class="py-12">
+    <Heading level={1}>Guía de estilo</Heading>
+    <p class="mt-4 max-w-measure text-ink-muted">
+      Cada primitivo de <code class="font-mono">src/components/ui/</code> con
+      sus variantes, en ambos temas. Esta página no se indexa y se elimina en la
+      Fase 6.
+    </p>
+  </Container>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2">
+    {themes.map((theme) => (
+      <div class:list={[theme, "bg-canvas py-10 text-ink"]}>
+        <Container class="space-y-14">
+          <p class="text-sm text-ink-muted">{themeNames[theme]}</p>
+
+          <div>
+            <Heading level={2}>Color</Heading>
+            <ul class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {colors.map((color) => (
+                <li class="text-sm">
+                  <span
+                    class:list={[
+                      "block h-12 rounded-md border border-ink-muted",
+                      color.swatch,
+                    ]}
+                  />
+                  <span class="mt-2 block">--{color.token}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-6">
+              Texto <span class="text-ink-muted">secundario</span>,{" "}
+              <a href="#" class="text-accent underline underline-offset-4">
+                enlace
+              </a>{" "}
+              y <strong class="text-highlight">dato resaltado</strong>.
+            </p>
+          </div>
+
+          <div>
+            <Heading level={2}>Tipografía</Heading>
+            <div class="mt-6 space-y-6">
+              <Heading level={3} size="display">
+                Felipe Martínez
+              </Heading>
+              <Heading level={3} size="h1">
+                Título de caso de estudio
+              </Heading>
+              <Heading level={3} size="h2">
+                Título de sección
+              </Heading>
+              <Heading level={3}>Título de proyecto o entrada</Heading>
+              {typeScale.map((item) => (
+                <p class:list={[item.class]}>
+                  <span class="text-ink-muted">{item.token}:</span>{" "}
+                  {item.sample}
+                </p>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <Heading level={2}>Button</Heading>
+            <div class="mt-6 flex flex-wrap items-center gap-3">
+              <Button href="#" size="lg">
+                Ver proyectos
+              </Button>
+              <Button href="#" variant="secondary">
+                <Download aria-hidden="true" />
+                Descargar CV (PDF)
+              </Button>
+              <Button href="#" variant="quiet">
+                Enlace discreto
+              </Button>
+            </div>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <Button>Botón principal</Button>
+              <Button variant="secondary">
+                <Mail aria-hidden="true" />
+                Copiar correo
+              </Button>
+              <Button variant="quiet">Botón discreto</Button>
+            </div>
+          </div>
+
+          <div>
+            <Heading level={2}>Tag</Heading>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <Tag>Python</Tag>
+              <Tag>Power BI</Tag>
+              <Tag>R</Tag>
+              <Tag variant="plain">2026, completado</Tag>
+            </div>
+          </div>
+
+          <div>
+            <Heading level={2}>Card</Heading>
+            <ul class="mt-6">
+              <Card as="li">
+                <Heading level={3}>
+                  <CardLink href="#">Fila con enlace extendido</CardLink>
+                </Heading>
+                <p class="mt-2 text-ink-muted">
+                  Toda la fila es clicable; el foco del enlace principal rodea
+                  la tarjeta.
+                </p>
+                <p class="mt-3">
+                  <a
+                    href="#"
+                    class="relative z-10 text-sm text-accent underline underline-offset-4"
+                  >
+                    Enlace secundario
+                  </a>
+                </p>
+              </Card>
+              <Card as="li" class="border-b">
+                <Heading level={3}>Fila sin enlace</Heading>
+                <p class="mt-2 text-ink-muted">
+                  Variante «row», con regla superior.
+                </p>
+              </Card>
+            </ul>
+            <Card variant="surface" class="mt-6">
+              <Heading level={3}>Superficie</Heading>
+              <p class="mt-2 text-ink-muted">
+                Variante «surface», para fichas y bloques elevados.
+              </p>
+            </Card>
+          </div>
+
+          <div>
+            <Heading level={2}>IconLink y ThemeToggle</Heading>
+            <div class="mt-6 flex flex-wrap items-center gap-2">
+              {github && (
+                <IconLink href="#" label="GitHub">
+                  <BrandIcon icon={github} />
+                </IconLink>
+              )}
+              <IconLink href="#" label="LinkedIn" showLabel />
+              <ThemeToggle label="Tema oscuro" />
+            </div>
+          </div>
+
+          <div>
+            <Heading level={2}>Prose</Heading>
+            <Prose class="mt-6">
+              <p>
+                El cuerpo de un caso de estudio usa{" "}
+                <strong>Atkinson Hyperlegible Next</strong> a 17 px, con una
+                medida de 65 caracteres y los <a href="#">enlaces en cobalto</a>
+                .
+              </p>
+              <h2>Encabezado de nivel dos</h2>
+              <p>
+                El código en línea, como <code>withBase("/")</code>, usa la
+                monoespaciada del sistema.
+              </p>
+              <ul>
+                <li>Un elemento de lista.</li>
+                <li>Otro elemento de lista.</li>
+              </ul>
+              <h3>Encabezado de nivel tres</h3>
+              <pre><code>{`export function withBase(path: string): string {
+  return path;
+}`}</code></pre>
+              <blockquote>
+                <p>Una cita, con borde en el color de texto secundario.</p>
+              </blockquote>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Token</th>
+                    <th>Uso</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>accent</td>
+                    <td>Acción y foco</td>
+                  </tr>
+                  <tr>
+                    <td>highlight</td>
+                    <td>Dato resaltado</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Prose>
+          </div>
+        </Container>
+      </div>
+    ))}
+  </div>
+
+  <Section id="ejemplo-seccion" title="Section">
+    <p class="max-w-measure text-ink-muted">
+      El primitivo Section fija el ritmo vertical, la regla superior y el margen
+      de desplazamiento bajo el header.
+    </p>
+  </Section>
+</BaseLayout>

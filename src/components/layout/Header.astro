@@ -1,0 +1,55 @@
+---
+import Container from "../ui/Container.astro";
+import ThemeToggle from "../ui/ThemeToggle.astro";
+import MobileNav from "./MobileNav.astro";
+
+interface Props {
+  name: string;
+  homeHref: string;
+  homeLabel: string;
+  /** hrefs already resolved with the base path. */
+  items: { label: string; href: string }[];
+  navLabel: string;
+  menuLabel: string;
+  themeLabel: string;
+}
+
+const { name, homeHref, homeLabel, items, navLabel, menuLabel, themeLabel } =
+  Astro.props;
+---
+
+<header class="sticky top-0 z-40 border-b border-line bg-canvas">
+  <Container class="flex min-h-14 flex-wrap items-center justify-between gap-x-4">
+    <a
+      href={homeHref}
+      aria-label={`${name}, ${homeLabel.toLowerCase()}`}
+      class="-mx-1 inline-flex min-h-11 items-center rounded-sm px-1 font-heading font-bold text-ink hover:text-accent"
+    >
+      {name}
+    </a>
+
+    <!-- Desktop nav. Without JS it also serves mobile, as a second row. -->
+    <nav
+      aria-label={navLabel}
+      class="order-last -mx-3 w-full max-md:js:hidden md:order-none md:mx-0 md:ml-auto md:w-auto"
+    >
+      <ul class="flex flex-wrap">
+        {items.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="inline-flex min-h-11 items-center px-3 text-ink hover:text-accent hover:underline hover:underline-offset-4"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-1">
+      <ThemeToggle label={themeLabel} />
+      <MobileNav items={items} navLabel={navLabel} buttonLabel={menuLabel} />
+    </div>
+  </Container>
+</header>

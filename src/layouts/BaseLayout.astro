@@ -1,0 +1,120 @@
+---
+import { Font } from "astro:assets";
+import "../styles/global.css";
+import SEO from "../components/layout/SEO.astro";
+import SkipLink from "../components/layout/SkipLink.astro";
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
+import { site } from "../data/site";
+import { ui } from "../data/ui";
+import { withBase } from "../lib/url";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.seo.description,
+  image = site.seo.image,
+  type,
+  noindex,
+} = Astro.props;
+
+// Must match --canvas in global.css (light / dark).
+const themeColors = { light: "#f3f5f4", dark: "#0f161d" };
+const navItems = site.nav.map((item) => ({
+  label: item.label,
+  href: withBase(item.href),
+}));
+const buildDate = new Date();
+---
+
+<!doctype html>
+<html lang="es" class="motion-safe:scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content={themeColors.light}
+      data-light={themeColors.light}
+      data-dark={themeColors.dark}
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content={themeColors.dark}
+      data-light={themeColors.light}
+      data-dark={themeColors.dark}
+    />
+    <!-- Blocking theme script, before styles, to avoid a flash of the wrong theme (CLAUDE.md §8). -->
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add("js");
+        let stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch {}
+        const dark = stored
+          ? stored === "dark"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        root.classList.toggle("dark", dark);
+        if (stored) {
+          const key = dark ? "dark" : "light";
+          document
+            .querySelectorAll('meta[name="theme-color"]')
+            .forEach((meta) => {
+              meta.content = meta.dataset[key];
+            });
+        }
+      })();
+    </script>
+    <Font
+      cssVariable="--typeface-body"
+      preload={[{ weight: 400, style: "normal" }]}
+    />
+    <Font cssVariable="--typeface-heading" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="icon" href={withBase("/favicon.ico")} sizes="32x32" />
+    <link rel="sitemap" href={withBase("/sitemap-index.xml")} />
+    <SEO
+      title={title}
+      titleTemplate={site.seo.titleTemplate}
+      siteName={site.name}
+      description={description}
+      image={image}
+      type={type}
+      locale={site.locale}
+      noindex={noindex}
+    />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <SkipLink label={ui.skipLink} />
+    <Header
+      name={site.name}
+      homeHref={withBase("/")}
+      homeLabel={ui.homeLink}
+      items={navItems}
+      navLabel={ui.nav.label}
+      menuLabel={ui.nav.menu}
+      themeLabel={ui.theme.toggle}
+    />
+    <main id="contenido" tabindex="-1" class="flex-1 focus:outline-none">
+      <slot />
+    </main>
+    <Footer
+      name={site.name}
+      updated={buildDate}
+      updatedLabel={ui.footer.updated}
+      sourceUrl={site.sourceUrl}
+      sourceLabel={ui.footer.source}
+    />
+  </body>
+</html>

@@ -1,0 +1,30 @@
+---
+import Container from "./Container.astro";
+import Heading from "./Heading.astro";
+
+interface Props {
+  /** Section anchor, in Spanish (e.g. "proyectos"). */
+  id: string;
+  title: string;
+  class?: string;
+}
+
+const { id, title, class: className } = Astro.props;
+const headingId = `${id}-titulo`;
+---
+
+<!-- Owns the vertical rhythm between sections (CLAUDE.md §4, rule 7). -->
+<section
+  id={id}
+  aria-labelledby={headingId}
+  class:list={["scroll-mt-18 border-t border-line py-section", className]}
+>
+  <Container>
+    <Heading level={2} id={headingId}>
+      {title}
+    </Heading>
+    <div class="mt-8 lg:mt-10">
+      <slot />
+    </div>
+  </Container>
+</section>
